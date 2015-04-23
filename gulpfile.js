@@ -5,6 +5,7 @@ var path = require('path');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var _ = require('lodash');
+var gulpWatch = require('gulp-watch');
 
 // CONSTANTS
 var SRC_DIR = 'src';
@@ -86,7 +87,7 @@ gulp.task('less', function () {
   }
 
   // set up watcher
-  var watcher = gulp.watch(SRC_DIR + '/**/*.less', processLess);
+  var watcher = gulpWatch(SRC_DIR + '/**/*.less', processLess);
 
   return processLess();
 
@@ -106,7 +107,7 @@ gulp.task('html', function () {
   }
 
   // set up watcher
-  var watcher = gulp.watch(SRC_DIR + '/index.html', processHTML);
+  var watcher = gulpWatch(SRC_DIR + '/index.html', processHTML);
 
   return processHTML();
 });
@@ -124,7 +125,13 @@ gulp.task('serve', function () {
     }
   });
 
-  gulp.watch(['*.html', '*.css', '*.js'], { cwd: DEV_DIR }, browserSync.reload);
+  var files = [
+    DEV_DIR + '/*.html',
+    DEV_DIR + '/*.css',
+    DEV_DIR + '/*.js',
+  ]
+
+  gulpWatch(files, browserSync.reload);
 })
 // SERVE //
 ///////////
